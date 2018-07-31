@@ -1,6 +1,6 @@
 {
-  "name": "redux-sauce",
-  "version": "0.0.0-alpha.1",
+  "name": "deltax",
+  "version": "0.0.0-alpha.2",
   "description": "",
   "main": "./lib/lib.js",
   "scripts": {
@@ -10,18 +10,21 @@
     "build:cli": "parcel build ./src/cli.js --out-dir ./cli"
   },
   "bin": {
-    "redux-sauce": "./src/cli.js"
+    "deltax": "./src/cli.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["redux", "middleware"],
+  "author": "Ryan P. Hansen",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rphansen91/deltax"
+  },
   "license": "ISC",
   "dependencies": {
     "commander": "^2.16.0",
-    "ncp": "^2.0.0",
-    "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0"
+    "ncp": "^2.0.0"
   },
   "devDependencies": {
+    "redux": "^4.0.0",
     "concurrently": "^3.6.1",
     "node-fetch": "^2.2.0"
   }

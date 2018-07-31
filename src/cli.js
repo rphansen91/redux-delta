@@ -37,6 +37,6 @@ function makeReducer (reducer) {
   const destination = resolve(cwd, "./store/reducers", reducer + ".js")
   if (fs.existsSync(destination)) return console.error("Reducer already exists")
   const content = `import { createReducer } from '${name}'\n\nexport default createReducer({}, [])`
-  fs.writeFileSync(destination, "utf8", content)
+  fs.writeFileSync(destination, content, "utf8")
   console.log('Done!')
 }
