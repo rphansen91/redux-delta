@@ -1,7 +1,7 @@
 {
   "name": "deltax",
-  "version": "0.0.0-alpha.2",
-  "description": "",
+  "version": "0.0.0-alpha.3",
+  "description": "Helper methods and cli to remove the boilerplate of Redux project setup and development.",
   "main": "./lib/lib.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

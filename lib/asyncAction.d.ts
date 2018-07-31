@@ -1,4 +1,3 @@
-import { MapPayload } from "./redux";
 import { Action } from "./action";
 import { Reducer } from "./reducer";
 interface AsyncActionCreator<T> {
@@ -13,5 +12,5 @@ interface AsyncState<T> {
     error: string;
     data?: T;
 }
-export declare function createAsyncAction<T>(type: string, mapToPayload?: MapPayload<T>): AsyncActionCreator<T>;
+export declare function createAsyncAction<T>(type: string, mapToPayload?: (payload: any, dispatch: any, getState: any) => Promise<T>): AsyncActionCreator<T>;
 export {};

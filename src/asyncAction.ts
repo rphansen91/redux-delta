@@ -16,23 +16,27 @@ interface AsyncState<T> {
   data?: T
 }
 
+interface AsyncCb<T> {
+  (payload: any, dispatch: any, getState: any): Promise<T>
+}
+
 function asyncState<T>(data?: T, loading: boolean = false, error: string = ''): AsyncState<T> {
   return { loading, data, error };
 }
 
 export function createAsyncAction<T> (
   type: string,
-  mapToPayload: MapPayload<T> = (v => v),
+  mapToPayload: (payload: any, dispatch: any, getState: any) => Promise<T> = (v => v),
 ): AsyncActionCreator<T> {
   const loading = createAction(`${type}_LOADING`);
   const success = createAction(`${type}_SUCCESS`);
   const failure = createAction(`${type}_FAILURE`);
 
-  const thunk: any = (payload: any) => (dispatch: any) => {
+  const thunk: any = (payload: any) => (dispatch: any, getState: any) => {
     dispatch(loading(payload));
 
     return Promise.resolve()
-      .then(() => mapToPayload(payload))
+      .then(() => mapToPayload(payload, dispatch, getState))
       .then(res => dispatch(success(res)))
       .catch(err => dispatch(failure(err)));
   }
