@@ -1,6 +1,6 @@
 {
   "name": "deltax",
-  "version": "0.0.0-alpha.5",
+  "version": "0.0.0-alpha.6",
   "description": "Helper methods and cli to remove the boilerplate of Redux project setup and development.",
   "main": "./lib/lib.js",
   "scripts": {

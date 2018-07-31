@@ -37,8 +37,10 @@ function createReduxProject () {
 }
 
 function makeReducer (reducer) {
+  const destinationDir = resolve(cwd, "./store/reducers")
   const destination = resolve(cwd, "./store/reducers", reducer + ".js")
   if (!isInitialized()) return console.error("Store is not initialized")
+  if (!fs.existsSync(destinationDir)) fs.mkdirSync(destinationDir)
   if (fs.existsSync(destination)) return console.error("Reducer already exists")
   const content = `import { createReducer } from '${name}'\n\nexport default createReducer({}, [])`
   fs.writeFileSync(destination, content, "utf8")
