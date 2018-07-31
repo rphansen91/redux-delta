@@ -20,14 +20,13 @@ program
 
 program.parse(process.argv);
 
-
 function isInitialized () {
-  const destination = resolve(cwd, "./store")
-  return fs.existsSync(destination)
+  return fs.existsSync(resolve(cwd, "./store"))
 }
 
 function createReduxProject () {
   const source = resolve(__dirname, "./template")
+  const destination = resolve(cwd, "./store")
   if (isInitialized()) return console.error("Store already exists")
   ncp(source, destination, err => {
     if (err) {
