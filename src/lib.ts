@@ -1,8 +1,8 @@
 import { Store } from "./redux"
+import { isFn } from "./utils"
 export { createAction } from "./action"
 export { createReducer } from "./reducer"
 export { createAsyncAction } from "./asyncAction"
-import { isFn } from "./utils"
 
 export function reduxSauceMiddleware () {
   return ({ dispatch, getState }: Store) => (next: any) => (action: any) => {

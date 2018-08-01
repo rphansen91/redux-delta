@@ -1,22 +1,26 @@
 {
-  "name": "deltax",
-  "version": "0.0.0-alpha.7",
+  "name": "redux-delta",
+  "version": "0.0.0-alpha.0",
   "description": "Helper methods and cli to remove the boilerplate of Redux project setup and development.",
   "main": "./lib/lib.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"tsc -w\" \"nodemon example.js\"",
-    "build:lib": "tsc",
-    "build:cli": "parcel build ./src/cli.js --out-dir ./cli"
+    "docs": "http-server -p 8080 -c-1 ./docs",
+    "build:docs": "typedoc --options typedoc.json",
+    "build:lib": "rm -rf ./lib && tsc"
   },
   "bin": {
-    "deltax": "./src/cli.js"
+    "redux-delta": "./cli/cli.js"
   },
-  "keywords": ["redux", "middleware"],
+  "keywords": [
+    "redux",
+    "middleware"
+  ],
   "author": "Ryan P. Hansen",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rphansen91/deltax"
+    "url": "https://github.com/rphansen91/redux-delta"
   },
   "license": "ISC",
   "dependencies": {

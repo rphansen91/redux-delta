@@ -1,4 +1,4 @@
-# DeltaX
+# Redux Delta
 
 ## Description
 
@@ -6,9 +6,9 @@ Helper methods and cli to remove the boilerplate of Redux project setup and deve
 
 ## Setup
 
-1. `npm install deltax --save`
+1. `npm install redux-delta --save`
 2. `cd <src directory>`
-3. `deltax create`
+3. `redux-delta create`
 
 ## Usage
 
@@ -16,7 +16,7 @@ Helper methods and cli to remove the boilerplate of Redux project setup and deve
 
 ```js
 // ./store/actions/counter.js
-import { createAction as ca } from "deltax"
+import { createAction as ca } from "redux-delta"
 
 export const inc = ca("INCREMENT")
 export const dec = ca("DECREMENT")
@@ -24,11 +24,11 @@ export const dec = ca("DECREMENT")
 
 2. Create Reducer
 
-  `deltax reducer counter`
+  `redux-delta reducer counter`
 
 ```js
 // ./store/reducers/counter.js
-import { createReducer as cr } from "deltax"
+import { createReducer as cr } from "redux-delta"
 import { inc, dec } from "../actions/counter"
 
 export default cr({ count: 0 }, [

@@ -2,7 +2,7 @@ import { MapPayload } from "./redux"
 import { Action, createAction } from "./action"
 import { Reducer, createReducer } from "./reducer"
 
-interface AsyncActionCreator<T> {
+export interface AsyncActionCreator<T> {
   (payload: any): (dispatch: any) => Promise<any>
   reducer: Reducer<AsyncState<T>>
   loading: Action
@@ -10,17 +10,17 @@ interface AsyncActionCreator<T> {
   failure: Action
 }
 
-interface AsyncState<T> {
+export interface AsyncState<T> {
   loading: boolean
   error: string
   data?: T
 }
 
-interface AsyncCb<T> {
+export interface AsyncCb<T> {
   (payload: any, dispatch: any, getState: any): Promise<T>
 }
 
-function asyncState<T>(data?: T, loading: boolean = false, error: string = ''): AsyncState<T> {
+export function asyncState<T>(data?: T, loading: boolean = false, error: string = ''): AsyncState<T> {
   return { loading, data, error };
 }
 
