@@ -3,11 +3,11 @@
 echo "Publish master or stable?"
 select branch in "master" "stable"; do
   read -p "You selected $branch. [Enter] to continue"
+  git fetch origin
   git checkout $branch
+  git pull origin $branch
 
-  git pull upstream $branch
-
-  read -p "Just pulled $branch from upstream. If everything is okay, hit [Enter]"
+  read -p "Just pulled $branch. If everything is okay, hit [Enter]"
 
   echo "What type of publish?"
   select version_type in "patch" "minor" "major"; do
@@ -48,9 +48,9 @@ select branch in "master" "stable"; do
   npm publish
   cd ../../
 
-  read -p "Ready to push $branch to upstream. [Enter] to continue"
-  git push upstream $branch
-  git push upstream --tags
+  read -p "Ready to push $branch. [Enter] to continue"
+  git push origin $branch
+  git push --tags
 
   break
 done
