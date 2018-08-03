@@ -1,10 +1,10 @@
-# <img src="assets/redux-delta.svg" alt="redux-delta" width="100" height="100"> Redux Delta
+# <img src="https://raw.githubusercontent.com/rphansen91/redux-delta/master/assets/redux-delta.svg?sanitize=true" alt="redux-delta" width="100" height="100"> Redux Delta
 
 ## Description
 
 Helper methods and cli to remove the boilerplate of Redux project setup and development.
 
-## [Example](/example.js)
+## [Example](https://github.com/rphansen91/redux-delta/blob/master/example.js)
 
 ## Setup
 

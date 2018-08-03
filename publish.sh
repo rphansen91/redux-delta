@@ -39,11 +39,7 @@ select branch in "master" "stable"; do
     break
   done
 
-
-  read -p "Ready to publish @reactivex/rxjs@$version. [Enter] to continue"
-  npm publish
-
-  read -p "Ready to publish rxjs@$version. [Enter] to continue"
+  read -p "Ready to publish redux-delta@$version. [Enter] to continue"
   cd dist/package/
   npm publish
   cd ../../

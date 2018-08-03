@@ -5,6 +5,7 @@ const fs = require("fs");
 
 middleware(
   makePackageJson,
+  copyReadme,
   copyCli
 )()
 
@@ -19,6 +20,15 @@ function makePackageJson (next) {
     "utf8"
   )
   next();
+}
+
+function copyReadme (next) {
+  const src = resolve(__dirname, "./README.md")
+  const dest = resolve(__dirname, "./dist/package/README.md")
+  ncp(src, dest, err => {
+    if (err) throw err;
+    next()
+  });
 }
 
 function copyCli (next) {
