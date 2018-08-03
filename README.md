@@ -1,8 +1,10 @@
-# Redux Delta
+# <img src="assets/redux-delta.svg" alt="redux-delta" width="100" height="100"> Redux Delta
 
 ## Description
 
 Helper methods and cli to remove the boilerplate of Redux project setup and development.
+
+## [Example](/example.js)
 
 ## Setup
 
@@ -10,9 +12,10 @@ Helper methods and cli to remove the boilerplate of Redux project setup and deve
 2. `cd <src directory>`
 3. `redux-delta create`
 
+
 ## Usage
 
-1. Create Actions
+### 1. Create Actions
 
 ```js
 // ./store/actions/counter.js
@@ -22,7 +25,7 @@ export const inc = ca("INCREMENT")
 export const dec = ca("DECREMENT")
 ```
 
-2. Create Reducer
+### 2. Create Reducer
 
   `redux-delta reducer counter`
 
@@ -38,7 +41,7 @@ export default cr({ count: 0 }, [
 
 ```
 
-3. Dispatch Actions
+### 3. Dispatch Actions
 
 ```js
 // ./components/counter.js
@@ -58,4 +61,43 @@ export default connect(
 )
 ```
 
-## [Example](/example.js)
+### 4. Higher Order Deltas (HOD)
+
+Higher order deltas are common redux patterns that can be reused and extended.
+
+#### 1. AsyncAction
+
+  ```js
+  import { combineReducers } from "redux"
+  import { asyncAction } from "redux-delta/dx/asyncAction"
+
+  const loadLuke = asyncAction("PROFILE", (id, dispatch, getState) =>
+    fetch(`https://swapi.co/api/people/${id}?format=json`)
+    .then(res => res.text()))
+
+  combineReducers({
+    luke: loadLuke.reducer
+  })
+
+  dispatch(loadProfile(1))
+  ```
+
+  State Lifecycle of AsyncAction
+
+  ```js
+  // On AsyncAction dispatch
+  -> ({ loading: true })
+  ```
+  ```js
+  // On AsyncAction Promise<LukeSkywalker> resolve
+  -> ({
+    loading: false,
+    data: { ...(LukeSkywalker) }
+  })
+  ```
+  ```js
+  // On AsyncAction Promise<LukeSkywalker> reject
+  -> { loading: false, error: "The API has succumb to the darkside" }
+  ```
+
+### 5. Custom Higher Order Deltas (CHOD)

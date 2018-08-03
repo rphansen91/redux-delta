@@ -1,6 +1,7 @@
 const fetch = require("node-fetch")
 const { createStore, combineReducers, applyMiddleware, compose } = require("redux")
-const { reduxSauceMiddleware, createAction, createReducer, createAsyncAction } = require("./lib/lib")
+const { reduxSauceMiddleware, createAction, createReducer } = require("./")
+const { asyncAction } = require("./dist/package/dx/asyncAction")
 
 // COUNTER
 const inc = createAction("INC")
@@ -23,7 +24,7 @@ const counter = createReducer(
 
 // ASYNC
 
-const loadProfile = createAsyncAction("PROFILE", (id) =>
+const loadProfile = asyncAction("PROFILE", (id, dispatch, getState) =>
   fetch(`https://swapi.co/api/people/${id}?format=json`)
   .then(res => res.text()))
 

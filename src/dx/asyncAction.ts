@@ -1,13 +1,13 @@
-import { MapPayload } from "./redux"
-import { Action, createAction } from "./action"
-import { Reducer, createReducer } from "./reducer"
+import { MapPayload } from "../redux"
+import { Action, ActionCreator, createAction } from "../action"
+import { Reducer, createReducer } from "../reducer"
 
 export interface AsyncActionCreator<T> {
   (payload: any): (dispatch: any) => Promise<any>
   reducer: Reducer<AsyncState<T>>
-  loading: Action
-  success: Action
-  failure: Action
+  loading: ActionCreator
+  success: ActionCreator
+  failure: ActionCreator
 }
 
 export interface AsyncState<T> {
@@ -24,7 +24,7 @@ export function asyncState<T>(data?: T, loading: boolean = false, error: string 
   return { loading, data, error };
 }
 
-export function createAsyncAction<T> (
+export function asyncAction<T> (
   type: string,
   mapToPayload: (payload: any, dispatch: any, getState: any) => Promise<T> = (v => v),
 ): AsyncActionCreator<T> {

@@ -6,5 +6,5 @@
   "moduleResolution": "node",
   "includeDeclarations": false,
   "mode": "file",
-  "out": "docs"
+  "out": "dist/docs"
 }
