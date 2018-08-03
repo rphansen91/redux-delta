@@ -8,7 +8,7 @@
     "dev": "concurrently \"tsc -w\" \"nodemon example.js\"",
     "docs": "http-server -p 8080 -c-1 ./docs",
     "build:docs": "typedoc --options typedoc.json",
-    "build:lib": "rm -rf ./lib && tsc"
+    "build:lib": "rm -rf ./lib && tsc && node make-package.js"
   },
   "bin": {
     "redux-delta": "./cli/cli.js"
