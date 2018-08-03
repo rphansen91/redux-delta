@@ -9,6 +9,10 @@ select branch in "master" "stable"; do
 
   read -p "Just pulled $branch. If everything is okay, hit [Enter]"
 
+  npm run build:package
+
+  read -p "Just built package. If everything is okay, hit [Enter]"
+
   echo "What type of publish?"
   select version_type in "patch" "minor" "major"; do
     read -p "Creating commit and tag for a $version_type release. Press [Enter].";
