@@ -5,8 +5,7 @@ const fs = require("fs");
 
 middleware(
   makePackageJson,
-  copyCli,
-  done
+  copyCli
 )()
 
 function makePackageJson (next) {

@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"tsc -w\" \"nodemon example.js\"",
-    "docs": "http-server -p 8080 -c-1 ./docs",
-    "build:docs": "typedoc --options typedoc.json",
-    "build:lib": "rm -rf ./lib && tsc && node make-package.js"
+    "docs": "http-server -p 8080 -c-1 ./dist/docs",
+    "build:docs": "rm -rf ./dist/docs && typedoc --options typedoc.json",
+    "build:package": "rm -rf ./dist/package && tsc && node make-package.js"
   },
   "bin": {
     "redux-delta": "./cli/cli.js"
