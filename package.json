@@ -1,6 +1,6 @@
 {
   "name": "redux-delta",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Helper methods and cli to remove the boilerplate of Redux project setup and development.",
   "main": "./dist/package/index.js",
   "scripts": {
