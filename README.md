@@ -1,5 +1,11 @@
 # <img src="https://raw.githubusercontent.com/rphansen91/redux-delta/master/assets/redux-delta.svg?sanitize=true" alt="redux-delta" width="100" height="100"> Redux Delta
 
+[![Travis Build](https://img.shields.io/travis/rphansen91/redux-delta.svg?style=flat-square)](https://travis-ci.org/rphansen91/redux-delta)
+[![Codecov](https://img.shields.io/codecov/c/github/rphansen91/redux-delta.svg?style=flat-square)](https://codecov.io/gh/rphansen91/redux-delta)
+[![npm](https://img.shields.io/npm/v/redux-delta.svg?style=flat-square)](https://www.npmjs.com/package/redux-delta)
+[![downloads](https://img.shields.io/npm/dw/redux-delta.svg?style=flat-square)](https://www.npmjs.com/package/redux-delta)
+
+
 ## Description
 
 Helper methods and cli to remove the boilerplate of Redux project setup and development.
