@@ -20,7 +20,7 @@ export interface Case {
 }
 
 export interface ActionCreator {
-  (payload: any): Action
+  (payload?: any): Action
   type: string
   isType(type: string): boolean
   case: (mapToUpdate: (state: any, payload: any) => any) => Case
@@ -38,19 +38,13 @@ export function createAction<T> (
     payload: mapToPayload(payload)
   })
 
-  builder.case = (mapToUpdate: Exec): Case => {
-    // if (!isFn(mapToUpdate)) throw new Error(`No callback supplied for case: "${type}"`)
+  builder.case = (mapToUpdate: Exec): Case => ({
+    isType,
+    exec: !isFn(mapToUpdate)
+      ? (s, p) => p
+      : (s, p) => mapToUpdate(s, p),
+  })
 
-    if (!isFn(mapToUpdate)) return {
-      exec: (s, p) => p,
-      isType: () => false
-    }
-
-    return {
-      exec: (s, p) => mapToUpdate(s, p),
-      isType
-    }
-  }
   builder.type = type
   builder.isType = isType
 

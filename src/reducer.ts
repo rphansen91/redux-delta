@@ -22,21 +22,18 @@ export function createReducer<T> (
   const empty: Array<Case> = []
   const validCases = empty.concat(actionCases).filter(isValidCase)
 
-  return (state: T = initialState, action: Action = { type: "" }): T => {
+  return (state: T = initialState, action: Action): T => {
     if (breakCase) {
       // HANDLE ONLY FIRST CASE
-      for (const i in validCases) {
-        if (validCases[i]) {
-          const { isType, exec } = validCases[i];
-          if (isType(action.type)) return mergeState({}, state, exec(state, action.payload));
-        }
+      for (const { isType, exec } of validCases) {
+        if (isType(action.type)) return mergeState({}, state, exec(state, action.payload));
       }
       return state
     } else {
       // HANDLE ALL CASES
       return validCases.reduce((acc, { isType, exec }) =>
         (isType(action.type))
-        ? mergeState({}, acc, exec(state, action.payload))
+        ? mergeState({}, acc, exec(acc, action.payload))
         : acc
       , mergeState({}, state))
     }
