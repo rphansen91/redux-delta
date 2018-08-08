@@ -9,10 +9,6 @@ select branch in "master" "stable"; do
 
   read -p "Just pulled $branch. If everything is okay, hit [Enter]"
 
-  npm run build:package
-
-  read -p "Just built package. If everything is okay, hit [Enter]"
-
   echo "What type of publish?"
   select version_type in "patch" "minor" "major"; do
     read -p "Creating commit and tag for a $version_type release. Press [Enter].";
@@ -27,17 +23,14 @@ select branch in "master" "stable"; do
     # because that's what we've always done
     git tag -d $version_with_v
 
-    echo "Deleted tag because it's wrong, no worries, we'll tag again in a sec"
-
-    # echo "Generating CHANGELOG.md"
-    # npm run generate_changelog
+    npm run build:package
+    read -p "Just built package. If everything is okay, hit [Enter]"
 
     # Quickly show changes to verify
     git diff
     read -p "Examine and correct CHANGELOG.md. [Enter] to continue"
 
     git tag $version
-
 
     read -p "git tag updated to $version; [Enter] to continue";
     break
