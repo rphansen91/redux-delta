@@ -7,8 +7,10 @@
     "test": "jest",
     "dev": "concurrently \"tsc -w\" \"nodemon example.js\"",
     "docs": "http-server -p 8080 -c-1 ./dist/docs",
-    "build:docs": "rm -rf ./dist/docs && typedoc --options typedoc.json",
-    "build:package": "rm -rf ./dist/package && tsc && node make-package.js"
+    "mjs": "tsc -d --outDir ./dist/package/es",
+    "common": "tsc -m commonjs --outDir ./dist/package/lib",
+    "build:package": "rm -rf ./dist/package && npm run mjs && npm run common && node make-package.js",
+    "build:docs": "rm -rf ./dist/docs && typedoc --options typedoc.json"
   },
   "bin": {
     "redux-delta": "./cli/cli.js"
