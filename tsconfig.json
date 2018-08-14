@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "module": "es2015",
+    "target": "ES2017",
     "declaration": true,
-    "outDir": "dist/package",
     "strict": true
   },
   "include": [

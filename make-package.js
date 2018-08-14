@@ -12,7 +12,8 @@ middleware(
 function makePackageJson (next) {
   const dest = resolve(__dirname, "./dist/package/package.json")
   const content = Object.assign({}, package, {
-    "main": "index.js"
+    "main": "lib/index.js",
+    "module": "es/index.js"
   })
   fs.writeFileSync(
     dest,
