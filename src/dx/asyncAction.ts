@@ -35,8 +35,7 @@ export function asyncAction<T> (
   const thunk: any = (payload: any) => (dispatch: any, getState: any) => {
     dispatch(loading(payload));
 
-    return Promise.resolve()
-      .then(() => mapToPayload(payload, dispatch, getState))
+    return mapToPayload(payload, dispatch, getState)
       .then(res => dispatch(success(res)))
       .catch(err => dispatch(failure(err)));
   }
