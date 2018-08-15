@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "module": "es2015",
-    "target": "ES2017",
+    "target": "es2015",
     "declaration": true,
-    "strict": true
+    "strict": true,
+    "outDir": "dist/package/lib",
+    "declarationDir": "dist/package/types",
   },
   "include": [
     "src/**/*"

@@ -1,7 +1,7 @@
 const fetch = require("node-fetch")
 const { createStore, combineReducers, applyMiddleware, compose } = require("redux")
 const { default: delta, createAction, createReducer } = require("./")
-const { asyncAction } = require("./dist/package/dx/asyncAction")
+const { asyncAction } = require("./dist/package/lib/dx/asyncAction")
 
 // COUNTER
 const inc = createAction("INC")
