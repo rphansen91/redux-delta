@@ -1,16 +1,17 @@
 import { createStore } from "redux"
-import { createAction, createReducer } from "./"
+import { ActionCreator, createAction } from "./action"
+import { Reducer, createReducer } from "./reducer"
 
 const noop = createAction("NOOP")
-const inc = createAction("INC")
-const dec = createAction("DEC")
+const inc = <ActionCreator<number>>createAction("INC")
+const dec = <ActionCreator<number>>createAction("DEC")
 
-const counter: any = createReducer({ count: 0 }, [
+const counter: Reducer<({ count: number })> = createReducer({ count: 0 }, [
   inc.case(({ count }, v = 1) => ({ count: count + v })),
   dec.case(({ count }, v = 1) => ({ count: count - v })),
 ])
 
-const dupecounter: any = createReducer({ count: 0 }, [
+const dupecounter: Reducer<({ count: number })> = createReducer({ count: 0 }, [
   inc.case(({ count }, v = 1) => ({ count: count + v })),
   inc.case(({ count }, v = 1) => ({ count: count + v })),
   dec.case(({ count }, v = 1) => ({ count: count - v })),
@@ -52,6 +53,18 @@ describe("Redux Delta", () => {
       const store = createStore(counter)
       store.dispatch(inc(1))
       expect(store.getState()).toEqual({ count: 1 })
+    })
+
+    it("Should be able to supply merge method", () => {
+      const mergeState = jest.fn((...args) => Object.assign({}, ...args))
+      const counter: any = createReducer({ count: 0 }, [
+        inc.case(({ count }, v = 1) => ({ count: count + v }))
+      ], { mergeState })
+      const store = createStore(counter)
+      store.dispatch(inc(1))
+      expect(store.getState()).toEqual({ count: 1 })
+      expect(mergeState).toBeCalledWith({}, { count: 0 })
+      expect(mergeState).toBeCalledWith({}, { count: 0 }, { count: 1 })
     })
   })
 })
