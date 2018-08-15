@@ -4,3 +4,5 @@ docs/
 *.ai
 dist/
 coverage/
+.rpt2_cache/
+.DS_Store
