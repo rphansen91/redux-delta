@@ -19,17 +19,17 @@ export interface Case {
   isType(type: string): boolean
 }
 
-export interface ActionCreator {
-  (payload?: any): Action
+export interface ActionCreator<T> {
+  (payload?: T): Action
   type: string
   isType(type: string): boolean
-  case: (mapToUpdate: (state: any, payload: any) => any) => Case
+  case: (mapToUpdate: (state: any, payload: T) => any) => Case
 }
 
 export function createAction<T> (
   type: string,
   mapToPayload: MapPayload<T> = (v => v)
-): ActionCreator {
+): ActionCreator<T> {
 
   const isType: IsType = (t: string) => t === type
 

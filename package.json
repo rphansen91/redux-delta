@@ -7,7 +7,7 @@
   "typings": "dist/package/types/index.d.ts",
   "scripts": {
     "test": "jest",
-    "dev": "concurrently \"tsc --module commonjs -w\" \"nodemon example.js\"",
+    "dev": "concurrently \"tsc --module commonjs -w\" \"nodemon examples/index\"",
     "docs": "http-server -p 8080 -c-1 ./dist/docs",
     "build:package": "rm -rf ./dist/package && tsc --module commonjs && rollup -c rollup.config.ts && node make-package.js",
     "build:docs": "rm -rf ./dist/docs && typedoc --options typedoc.json"

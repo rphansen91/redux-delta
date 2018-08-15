@@ -10,7 +10,7 @@
 
 Helper methods and cli to remove the boilerplate of Redux project setup and development.
 
-## [Example](https://github.com/rphansen91/redux-delta/blob/master/example.js)
+## [Examples](https://github.com/rphansen91/redux-delta/blob/master/examples)
 
 ## Setup
 
