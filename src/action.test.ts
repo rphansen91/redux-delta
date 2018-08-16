@@ -18,22 +18,22 @@ describe("Redux Delta", () => {
 
     it("Should validate if an action is a type", () => {
       const type = "ABC"
-      const action_1 = createAction(type)
-      const action_2 = createAction(type)()
-      expect(action_1.isType(action_2.type)).toBeTruthy()
+      const action1 = createAction(type)
+      const action2 = createAction(type)()
+      expect(action1.isType(action2.type)).toBeTruthy()
     })
 
     it("Should validate if an action is not a type", () => {
-      const action_1 = createAction("ABC")
-      const action_2 = createAction("XYZ")()
-      expect(action_1.isType(action_2.type)).toBeFalsy()
+      const action1 = createAction("ABC")
+      const action2 = createAction("XYZ")()
+      expect(action1.isType(action2.type)).toBeFalsy()
     })
 
     it("Should create a case statement", () => {
       const state = {}
       const type = "ABC"
       const payload = "123"
-      const fn = jest.fn((a, b) => ([a, b]))
+      const fn = jest.fn((a, b) => [a, b])
       const action = createAction(type)
       const { isType, exec } = action.case(fn)
       const result = exec(state, payload)

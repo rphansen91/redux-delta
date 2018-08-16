@@ -13,8 +13,22 @@ describe("Redux Delta", () => {
       })
 
       it("Should initialize a paginator delta page 4", () => {
-        const s = createStore(combineReducers(paginator.createReducer({ page: 4, loading: false, data: null, error: "" })))
-        expect(paginator.mapper(s.getState())).toEqual({ page: 4, loading: false, data: null, error: "" })
+        const s = createStore(
+          combineReducers(
+            paginator.createReducer({
+              page: 4,
+              loading: false,
+              data: null,
+              error: ""
+            })
+          )
+        )
+        expect(paginator.mapper(s.getState())).toEqual({
+          page: 4,
+          loading: false,
+          data: null,
+          error: ""
+        })
       })
 
       it("Should extend paginator delta", () => {

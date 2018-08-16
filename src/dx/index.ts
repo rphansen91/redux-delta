@@ -14,24 +14,26 @@ export default class DeltaX<T> {
     this.name = name
   }
 
-  getCases (): Case[] {
+  getCases(): Case[] {
     return []
   }
 
-  createAction<t> (name: string, fn: MapPayload<t> = (v => v)): ActionCreator<t> {
-    if (this.actions[name]) throw new Error(`"${name}" already created on reducer "${this.name}"`)
-    const action: ActionCreator<t> = ca(name, fn);
+  createAction<t>(name: string, fn: MapPayload<t> = v => v): ActionCreator<t> {
+    if (this.actions[name]) {
+      throw new Error(`"${name}" already created on reducer "${this.name}"`)
+    }
+    const action: ActionCreator<t> = ca(name, fn)
     this.actions[name] = action
     return action
   }
 
-  createReducer (initial: T): State<Reducer<T>> {
+  createReducer(initial: T): State<Reducer<T>> {
     return {
       [this.name]: cr(initial, this.getCases())
     }
   }
 
-  mapper (state: State<T>): T {
+  mapper(state: State<T>): T {
     return state && state[this.name]
   }
 }

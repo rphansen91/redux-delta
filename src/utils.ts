@@ -6,7 +6,7 @@ export const isString = typeOf("string")
 
 export const toActionName = (...str: string[]): string =>
   str
-  .filter(isString)
-  .join(" ")
-  .replace(/\ |\-|(?<=\w)([A-Z])/g, '_$1')
-  .toUpperCase()
+    .filter(isString)
+    .join(" ")
+    .replace(/\ |\-|(?<=\w)([A-Z])/g, "_$1")
+    .toUpperCase()

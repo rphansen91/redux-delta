@@ -13,7 +13,9 @@ describe("Redux Delta", () => {
       })
 
       it("Should initialize a toggle delta active true", () => {
-        const s = createStore(combineReducers(toggle.createReducer({ active: true })))
+        const s = createStore(
+          combineReducers(toggle.createReducer({ active: true }))
+        )
         expect(toggle.mapper(s.getState())).toEqual({ active: true })
       })
 

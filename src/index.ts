@@ -4,7 +4,7 @@ export { toActionName } from "./utils"
 export { createAction } from "./action"
 export { createReducer } from "./reducer"
 
-function reduxDeltaMiddleware () {
+function reduxDeltaMiddleware() {
   return ({ dispatch, getState }: Store) => (next: any) => (action: any) => {
     if (isFn(action)) return action(dispatch, getState)
     return next(action)

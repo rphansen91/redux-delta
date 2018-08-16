@@ -6,11 +6,22 @@
   "module": "dist/package/es/index.js",
   "typings": "dist/package/types/index.d.ts",
   "scripts": {
+    "lint": "tslint -t codeFrame 'src/**/*.ts'",
     "test": "jest",
-    "dev": "concurrently \"tsc --module commonjs -w\" \"nodemon examples/index\"",
+    "test:watch": "jest --watch",
+    "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
+    "start": "concurrently \"tsc --module commonjs -w\" \"nodemon examples/index\"",
     "docs": "http-server -p 8080 -c-1 ./dist/docs",
     "build:package": "rm -rf ./dist/package && tsc --module commonjs && rollup -c rollup.config.ts && node make-package.js",
-    "build:docs": "rm -rf ./dist/docs && typedoc --options typedoc.json"
+    "build:docs": "rm -rf ./dist/docs && typedoc --options typedoc.json",
+    "lint-staged": "lint-staged"
+  },
+  "pre-commit": [
+    "test",
+    "lint-staged"
+  ],
+  "lint-staged": {
+    "{*.ts,*.js}": "npm run lint"
   },
   "bin": {
     "redux-delta": "./cli/cli.js"
@@ -33,8 +44,11 @@
     "@types/jest": "^23.3.1",
     "concurrently": "^3.6.1",
     "jest": "^23.4.2",
+    "lint-staged": "^7.2.2",
     "lodash.camelcase": "^4.3.0",
     "node-fetch": "^2.2.0",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.14.2",
     "redux": "^4.0.0",
     "rollup": "^0.64.1",
     "rollup-plugin-commonjs": "^9.1.5",
@@ -43,11 +57,26 @@
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.16.1",
     "ts-jest": "^23.1.3",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.14.0",
+    "tslint-config-standard": "^7.1.0",
     "typescript": "^3.0.1"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": false
   },
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
+    },
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
     },
     "collectCoverage": true,
     "testURL": "http://localhost/",

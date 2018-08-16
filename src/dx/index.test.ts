@@ -25,7 +25,9 @@ describe("Redux Delta", () => {
       it("Should throw an error if action already exists", () => {
         const actionName = "a"
         expect(typeof delta.createAction(actionName)).toBe("function")
-        expect(() => delta.createAction(actionName, v => v)).toThrowError(`"${actionName}" already created on reducer "${name}"`)
+        expect(() => delta.createAction(actionName, v => v)).toThrowError(
+          `"${actionName}" already created on reducer "${name}"`
+        )
       })
     })
   })

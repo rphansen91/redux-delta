@@ -2,7 +2,7 @@ import { MapPayload } from "./redux"
 import { isFn } from "./utils"
 
 export interface Action {
-  type: string,
+  type: string
   payload?: any
 }
 
@@ -26,11 +26,10 @@ export interface ActionCreator<T> {
   case: (mapToUpdate: (state: any, payload: T) => any) => Case
 }
 
-export function createAction<T> (
+export function createAction<T>(
   type: string,
-  mapToPayload: MapPayload<T> = (v => v)
+  mapToPayload: MapPayload<T> = v => v
 ): ActionCreator<T> {
-
   const isType: IsType = (t: string) => t === type
 
   const builder: any = (payload: T) => ({
@@ -40,9 +39,7 @@ export function createAction<T> (
 
   builder.case = (mapToUpdate: Exec): Case => ({
     isType,
-    exec: !isFn(mapToUpdate)
-      ? (s, p) => p
-      : (s, p) => mapToUpdate(s, p),
+    exec: !isFn(mapToUpdate) ? (s, p) => p : (s, p) => mapToUpdate(s, p)
   })
 
   builder.type = type

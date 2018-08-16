@@ -5,8 +5,8 @@ import { ActionCreator } from "../action"
 
 export class AsyncState<D> {
   loading: boolean = false
-  error: string = ''
-  data: D|null = null
+  error: string = ""
+  data: D | null = null
 }
 
 export class Async<D> extends DeltaX<AsyncState<D>> {
@@ -14,22 +14,24 @@ export class Async<D> extends DeltaX<AsyncState<D>> {
   setFailure: ActionCreator<string>
   setSuccess: ActionCreator<D>
 
-  constructor (name: string) {
+  constructor(name: string) {
     super(name)
     this.setLoading = this.createAction(toActionName(name, "loading"))
     this.setSuccess = this.createAction(toActionName(name, "success"))
     this.setFailure = this.createAction(toActionName(name, "failure"))
   }
 
-  createReducer (initial: AsyncState<D> = new AsyncState()): State<Reducer<AsyncState<D>>> {
+  createReducer(
+    initial: AsyncState<D> = new AsyncState()
+  ): State<Reducer<AsyncState<D>>> {
     return super.createReducer(initial)
   }
 
-  mapper (state: State<AsyncState<D>>): AsyncState<D> {
+  mapper(state: State<AsyncState<D>>): AsyncState<D> {
     return super.mapper(state)
   }
 
-  getCases () {
+  getCases() {
     return [
       this.setLoading.case((_, loading: boolean) => ({ loading: !!loading })),
       this.setFailure.case((_, error: string) => ({ error })),

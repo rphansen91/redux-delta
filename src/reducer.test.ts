@@ -3,18 +3,18 @@ import { ActionCreator, createAction } from "./action"
 import { Reducer, createReducer } from "./reducer"
 
 const noop = createAction("NOOP")
-const inc = <ActionCreator<number>>createAction("INC")
-const dec = <ActionCreator<number>>createAction("DEC")
+const inc = createAction("INC") as ActionCreator<number>
+const dec = createAction("DEC") as ActionCreator<number>
 
-const counter: Reducer<({ count: number })> = createReducer({ count: 0 }, [
+const counter: Reducer<{ count: number }> = createReducer({ count: 0 }, [
   inc.case(({ count }, v = 1) => ({ count: count + v })),
-  dec.case(({ count }, v = 1) => ({ count: count - v })),
+  dec.case(({ count }, v = 1) => ({ count: count - v }))
 ])
 
-const dupecounter: Reducer<({ count: number })> = createReducer({ count: 0 }, [
+const dupecounter: Reducer<{ count: number }> = createReducer({ count: 0 }, [
   inc.case(({ count }, v = 1) => ({ count: count + v })),
   inc.case(({ count }, v = 1) => ({ count: count + v })),
-  dec.case(({ count }, v = 1) => ({ count: count - v })),
+  dec.case(({ count }, v = 1) => ({ count: count - v }))
 ])
 
 describe("Redux Delta", () => {
@@ -38,7 +38,7 @@ describe("Redux Delta", () => {
     it("Should handle an action twice", () => {
       const counter: any = createReducer({ count: 0 }, [
         inc.case(({ count }, v = 1) => ({ count: count + v })),
-        inc.case(({ count }, v = 1) => ({ count: count + v })),
+        inc.case(({ count }, v = 1) => ({ count: count + v }))
       ])
       const store = createStore(counter)
       store.dispatch(inc(1))
@@ -46,10 +46,14 @@ describe("Redux Delta", () => {
     })
 
     it("Should break after first case", () => {
-      const counter: any = createReducer({ count: 0 }, [
-        inc.case(({ count }, v = 1) => ({ count: count + v })),
-        inc.case(({ count }, v = 1) => ({ count: count + v })),
-      ], { breakCase: true })
+      const counter: any = createReducer(
+        { count: 0 },
+        [
+          inc.case(({ count }, v = 1) => ({ count: count + v })),
+          inc.case(({ count }, v = 1) => ({ count: count + v }))
+        ],
+        { breakCase: true }
+      )
       const store = createStore(counter)
       store.dispatch(inc(1))
       expect(store.getState()).toEqual({ count: 1 })
@@ -57,9 +61,11 @@ describe("Redux Delta", () => {
 
     it("Should be able to supply merge method", () => {
       const mergeState = jest.fn((...args) => Object.assign({}, ...args))
-      const counter: any = createReducer({ count: 0 }, [
-        inc.case(({ count }, v = 1) => ({ count: count + v }))
-      ], { mergeState })
+      const counter: any = createReducer(
+        { count: 0 },
+        [inc.case(({ count }, v = 1) => ({ count: count + v }))],
+        { mergeState }
+      )
       const store = createStore(counter)
       store.dispatch(inc(1))
       expect(store.getState()).toEqual({ count: 1 })

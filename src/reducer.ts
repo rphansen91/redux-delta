@@ -9,15 +9,12 @@ export interface Reducer<T> {
   (state: T, action: Action): T
 }
 
-const isValidCase = (c: Case): boolean => c && isFn(c.isType) && isFn(c.exec);
+const isValidCase = (c: Case): boolean => c && isFn(c.isType) && isFn(c.exec)
 
-export function createReducer<T> (
+export function createReducer<T>(
   initialState: T,
   actionCases: Array<Case>,
-  {
-    breakCase=false,
-    mergeState=(<any>Object).assign
-  } = {}
+  { breakCase = false, mergeState = (Object as any).assign } = {}
 ): Reducer<T> {
   const empty: Array<Case> = []
   const validCases = empty.concat(actionCases).filter(isValidCase)
@@ -26,16 +23,20 @@ export function createReducer<T> (
     if (breakCase) {
       // HANDLE ONLY FIRST CASE
       for (const { isType, exec } of validCases) {
-        if (isType(action.type)) return mergeState({}, state, exec(state, action.payload));
+        if (isType(action.type)) {
+          return mergeState({}, state, exec(state, action.payload))
+        }
       }
       return state
     } else {
       // HANDLE ALL CASES
-      return validCases.reduce((acc, { isType, exec }) =>
-        (isType(action.type))
-        ? mergeState({}, acc, exec(acc, action.payload))
-        : acc
-      , mergeState({}, state))
+      return validCases.reduce(
+        (acc, { isType, exec }) =>
+          isType(action.type)
+            ? mergeState({}, acc, exec(acc, action.payload))
+            : acc,
+        mergeState({}, state)
+      )
     }
   }
 }
