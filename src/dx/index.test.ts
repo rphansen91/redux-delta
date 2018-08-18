@@ -1,33 +1,32 @@
-import { createStore, combineReducers } from "redux"
-import DeltaX from "./"
+import composeDeltas from "./"
+import { createStore } from "redux"
+import { toggleΔ } from "./toggle"
+import { asyncΔ } from "./async"
 
 describe("Redux Delta", () => {
   describe("Higher Order Delta", () => {
-    describe("Creator", () => {
-      const name = "creator"
-      const delta = new DeltaX(name)
-      const store = createStore(combineReducers(delta.createReducer({})))
+    describe("Composer", () => {
+      const activeAsyncΔ = composeDeltas(toggleΔ, asyncΔ)
+      const user = activeAsyncΔ("user", { active: true })
+      const store = createStore(user)
 
-      it("Should create an async delta", () => {
-        expect(delta).toBeInstanceOf(DeltaX)
+      it("Should have initial active", () => {
+        expect(store.getState()).toEqual({
+          active: true,
+          loading: false,
+          data: null,
+          error: ""
+        })
       })
 
-      it("Should be able to get cases", () => {
-        const cases = delta.getCases()
-        expect(cases).toEqual([])
-      })
-
-      it("Should be able to get state", () => {
-        const state = delta.mapper(store.getState())
-        expect(state).toEqual({})
-      })
-
-      it("Should throw an error if action already exists", () => {
-        const actionName = "a"
-        expect(typeof delta.createAction(actionName)).toBe("function")
-        expect(() => delta.createAction(actionName, v => v)).toThrowError(
-          `"${actionName}" already created on reducer "${name}"`
-        )
+      it("Should set active false", () => {
+        store.dispatch(user.setActive(false))
+        expect(store.getState()).toEqual({
+          active: false,
+          loading: false,
+          data: null,
+          error: ""
+        })
       })
     })
   })

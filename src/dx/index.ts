@@ -1,39 +1,33 @@
 import { MapPayload } from "../redux"
-import { createAction as ca, ActionCreator, Case } from "../action"
-import { createReducer as cr, Reducer } from "../reducer"
+import { createAction, ActionCreator, Action } from "../action"
+import { Reducer } from "../reducer"
 
-export interface State<S> {
-  [name: string]: S
+const initDelta = createAction("@@INIT_DELTA")
+export interface Delta<T> extends Reducer<T> {
+  [key: string]: ActionCreator<any>
 }
 
-export default class DeltaX<T> {
-  private actions: { [name: string]: ActionCreator<any> } = {}
-  name: string = ""
+export default function compose(
+  ...deltasFns: ((name: string) => Delta<any>)[]
+) {
+  return function(name: string, initialState: any = {}): Delta<any> {
+    const deltas = deltasFns.map(deltasFn => deltasFn(name))
+    const initial = deltas
+      .map(delta => delta(undefined, initDelta()))
+      .concat(initialState)
+      .reduce((acc, c) => (Object as any).assign(acc, c), {})
 
-  constructor(name: string) {
-    this.name = name
-  }
-
-  getCases(): Case[] {
-    return []
-  }
-
-  createAction<t>(name: string, fn: MapPayload<t> = v => v): ActionCreator<t> {
-    if (this.actions[name]) {
-      throw new Error(`"${name}" already created on reducer "${this.name}"`)
+    const reducer: any = (state: any = initial, action: Action): any => {
+      return deltas.reduce((acc, delta) => delta(acc, action), state)
     }
-    const action: ActionCreator<t> = ca(name, fn)
-    this.actions[name] = action
-    return action
-  }
 
-  createReducer(initial: T): State<Reducer<T>> {
-    return {
-      [this.name]: cr(initial, this.getCases())
-    }
-  }
+    deltas.reduce((acc, delta) => {
+      for (let key in delta) {
+        acc[key] = delta[key]
+      }
+      return acc
+    }, reducer)
 
-  mapper(state: State<T>): T {
-    return state && state[this.name]
+    return reducer
   }
 }

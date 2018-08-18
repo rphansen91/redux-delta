@@ -4,13 +4,8 @@
     "target": "es5",
     "declaration": true,
     "strict": true,
-    "outDir": "dist/package/lib",
-    "declarationDir": "dist/package/types",
+    "outDir": "dist/package/lib"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "src/**/*.test.ts"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.test.ts"]
 }

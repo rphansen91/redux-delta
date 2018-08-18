@@ -1,29 +1,37 @@
-import { createStore, combineReducers } from "redux"
-import { Paginator, PaginateState } from "./paginator"
+import composeDeltas from "./"
+import { createStore } from "redux"
+import { asyncΔ } from "./async"
+import { paginatorΔ, PaginateState } from "./paginator"
 
 describe("Redux Delta", () => {
   describe("Higher Order Delta", () => {
     describe("Paginator", () => {
-      const name = "paginator"
-      const paginator = new Paginator(name)
-      const store = createStore(combineReducers(paginator.createReducer()))
+      const pageasyncΔ = composeDeltas(asyncΔ, paginatorΔ)
+      const user = pageasyncΔ("paginator")
+      const store = createStore(user)
 
       it("Should create a paginator delta", () => {
-        expect(paginator).toBeInstanceOf(Paginator)
+        expect(typeof user).toBe("function")
+        expect(typeof user.setLoading).toBe("function")
+        expect(typeof user.setFailure).toBe("function")
+        expect(typeof user.setSuccess).toBe("function")
+        expect(typeof user.setNextPage).toBe("function")
+        expect(typeof user.setMaxPages).toBe("function")
+        expect(typeof user.setPage).toBe("function")
       })
 
       it("Should initialize a paginator delta page 4", () => {
-        const s = createStore(
-          combineReducers(
-            paginator.createReducer({
-              page: 4,
-              loading: false,
-              data: null,
-              error: ""
-            })
-          )
-        )
-        expect(paginator.mapper(s.getState())).toEqual({
+        const p = paginatorΔ("paginator", { page: 4 })
+        const s = createStore(p)
+        expect(s.getState()).toEqual({
+          page: 4
+        })
+      })
+
+      it("Should initialize a paginator delta page 4", () => {
+        const p = pageasyncΔ("paginator", { page: 4 })
+        const s = createStore(p)
+        expect(s.getState()).toEqual({
           page: 4,
           loading: false,
           data: null,
@@ -31,27 +39,21 @@ describe("Redux Delta", () => {
         })
       })
 
-      it("Should extend paginator delta", () => {
-        expect(typeof paginator.setLoading).toBe("function")
-        expect(typeof paginator.setFailure).toBe("function")
-        expect(typeof paginator.setSuccess).toBe("function")
-      })
-
       it("Should set maxPages", () => {
-        store.dispatch(paginator.setMaxPages(10))
-        const { maxPages } = paginator.mapper(store.getState())
+        store.dispatch(user.setMaxPages(10))
+        const { maxPages } = store.getState()
         expect(maxPages).toBe(10)
       })
 
       it("Should set nextPage", () => {
-        store.dispatch(paginator.setNextPage("http://google.com/page/1"))
-        const { nextPage } = paginator.mapper(store.getState())
+        store.dispatch(user.setNextPage("http://google.com/page/1"))
+        const { nextPage } = store.getState()
         expect(nextPage).toBe("http://google.com/page/1")
       })
 
       it("Should set page", () => {
-        store.dispatch(paginator.setPage(1))
-        const { page } = paginator.mapper(store.getState())
+        store.dispatch(user.setPage(1))
+        const { page } = store.getState()
         expect(page).toBe(1)
       })
     })
