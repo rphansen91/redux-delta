@@ -12,7 +12,7 @@ export class ToggleState {
   active: boolean = false
 }
 
-export function toggleΔ(
+export function toggleDelta(
   name: string,
   initial: ToggleState = new ToggleState()
 ): ToggleΔ {

@@ -53,14 +53,7 @@ import { inc, dec } from "../store/actions/counter"
 
 export default connect(
   ({ counter }) => ({ counter }),
-  dispatch => ({
-    inc() {
-      dispatch(inc())
-    },
-    dec() {
-      dispatch(dec())
-    }
-  })
+  { inc, dec }
 )
 ```
 
@@ -68,13 +61,23 @@ export default connect(
 
 Higher order deltas are common redux patterns that can be reused and extended.
 
-#### 1. toggleΔ
+#### 1. Toggle Delta
+
+- Schema
+
+```js
+{
+  "active": boolean
+}
+```
+
+- Usage
 
 ```js
 import { createStore } from "redux"
-import { toggleΔ } from "redux-delta/lib/dx/toggle"
+import { toggleDelta } from "redux-delta/lib/dx/toggle"
 
-const toggle = toggleΔ("MENU", { active: false })
+const toggle = toggleDelta("MENU", { active: false })
 const store = createStore(toggle)
 store.getState() // { active: false }
 store.dispatch(toggle.toggleActive())
@@ -85,13 +88,25 @@ store.dispatch(toggle.setActive(true))
 store.getState() // { active: true }
 ```
 
-#### 2. asyncΔ
+#### 2. Async Delta
+
+- Schema
+
+```js
+{
+  "loading": boolean
+  "data": D | null
+  "error": string
+}
+```
+
+- Usage
 
 ```js
 import { createStore } from "redux"
-import { asyncΔ } from "redux-delta/lib/dx/async"
+import { asyncDelta } from "redux-delta/lib/dx/async"
 
-const luke = asyncΔ("Luke Skywalker")
+const luke = asyncDelta("Luke Skywalker")
 
 const store = createStore(luke)
 
@@ -117,10 +132,10 @@ fetch(`https://swapi.co/api/people/0?format=json`)
 
 ```js
 import composeDeltas from "redux-delta/lib/dx"
-import { toggleΔ } from "redux-delta/lib/dx/toggle"
-import { asyncΔ } from "redux-delta/lib/dx/async"
+import { toggleDelta } from "redux-delta/lib/dx/toggle"
+import { asyncDelta } from "redux-delta/lib/dx/async"
 
-const activeasyncΔ = composeDeltas(toggleΔ, asyncΔ)
-const unique = activeasyncΔ("unique/identifier/", initial)
+const activeAsyncΔ = composeDeltas(toggleDelta, asyncDelta)
+const unique = activeAsyncΔ("unique/identifier/", initial)
 const store = createStore(userinfo)
 ```

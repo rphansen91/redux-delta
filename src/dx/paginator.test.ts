@@ -1,12 +1,12 @@
 import composeDeltas from "./"
 import { createStore } from "redux"
-import { asyncΔ } from "./async"
-import { paginatorΔ, PaginateState } from "./paginator"
+import { asyncDelta } from "./async"
+import { paginatorDelta, PaginateState } from "./paginator"
 
 describe("Redux Delta", () => {
   describe("Higher Order Delta", () => {
     describe("Paginator", () => {
-      const pageasyncΔ = composeDeltas(asyncΔ, paginatorΔ)
+      const pageasyncΔ = composeDeltas(asyncDelta, paginatorDelta)
       const user = pageasyncΔ("paginator")
       const store = createStore(user)
 
@@ -21,7 +21,7 @@ describe("Redux Delta", () => {
       })
 
       it("Should initialize a paginator delta page 4", () => {
-        const p = paginatorΔ("paginator", { page: 4 })
+        const p = paginatorDelta("paginator", { page: 4 })
         const s = createStore(p)
         expect(s.getState()).toEqual({
           page: 4

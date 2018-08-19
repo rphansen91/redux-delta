@@ -1,53 +1,53 @@
 import { createStore } from "redux"
-import { asyncΔ } from "./async"
+import { asyncDelta } from "./async"
 
 describe("Redux Delta", () => {
   describe("Higher Order Delta", () => {
     describe("Async", () => {
-      const name = "async"
-      const async = asyncΔ<{ a: number; b: number }>(name)
-      const store = createStore(async)
+      const name = "profile"
+      const profile = asyncDelta<{ name: string; image: string }>(name)
+      const store = createStore(profile)
 
       it("Should create an async delta", () => {
-        expect(typeof async).toBe("function")
-        expect(typeof async.setLoading).toBe("function")
-        expect(typeof async.setFailure).toBe("function")
-        expect(typeof async.setSuccess).toBe("function")
+        expect(typeof profile).toBe("function")
+        expect(typeof profile.setLoading).toBe("function")
+        expect(typeof profile.setFailure).toBe("function")
+        expect(typeof profile.setSuccess).toBe("function")
       })
 
       it("Should be able to set the loading state true", () => {
-        store.dispatch(async.setLoading(true))
+        store.dispatch(profile.setLoading(true))
         const { loading } = store.getState()
         expect(loading).toBeTruthy()
       })
 
       it("Should be able to set the loading state false", () => {
-        store.dispatch(async.setLoading(false))
+        store.dispatch(profile.setLoading(false))
         const { loading } = store.getState()
         expect(loading).toBeFalsy()
       })
 
       it("Should be able to set error state", () => {
-        store.dispatch(async.setFailure("Reference error"))
+        store.dispatch(profile.setFailure("Reference error"))
         const { error } = store.getState()
         expect(error).toBe("Reference error")
       })
 
       it("Should be able to set error state empty", () => {
-        store.dispatch(async.setFailure(""))
+        store.dispatch(profile.setFailure(""))
         const { error } = store.getState()
         expect(error).toBe("")
       })
 
       it("Should be able to set data", () => {
-        const d = { a: 1, b: 2 }
-        store.dispatch(async.setSuccess(d))
+        const d = { name: "Ryan", image: "http://placehold.it/300x300" }
+        store.dispatch(profile.setSuccess(d))
         const { data } = store.getState()
         expect(data).toBe(d)
       })
 
       it("Should be able initialize with loading true", () => {
-        const a = asyncΔ(name, {
+        const a = asyncDelta(name, {
           loading: true,
           data: null,
           error: ""

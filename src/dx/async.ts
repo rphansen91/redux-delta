@@ -15,7 +15,7 @@ export class AsyncState<D> {
   data: D | null = null
 }
 
-export function asyncΔ<D>(
+export function asyncDelta<D>(
   name: string,
   initial: AsyncState<D> = new AsyncState()
 ): AsyncΔ<D> {

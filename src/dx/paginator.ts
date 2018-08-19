@@ -14,7 +14,7 @@ export class PaginateState {
   page?: number
 }
 
-export function paginatorΔ(
+export function paginatorDelta(
   name: string,
   initial: PaginateState = new PaginateState()
 ): PaginatorΔ {

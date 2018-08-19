@@ -11,8 +11,8 @@ const {
   createReducer
 } = require("../dist/package/lib")
 const { default: composeDeltas } = require("../dist/package/lib/dx")
-const { asyncΔ } = require("../dist/package/lib/dx/async")
-const { paginatorΔ } = require("../dist/package/lib/dx/paginator")
+const { asyncDelta } = require("../dist/package/lib/dx/async")
+const { paginatorDelta } = require("../dist/package/lib/dx/paginator")
 const nextPlanets = `https://swapi.co/api/planets?page=4&format=json`
 const nextStarships = `https://swapi.co/api/starships?page=1&format=json`
 const pagePlanets = extractPage(nextPlanets)
@@ -20,9 +20,9 @@ const pageStarships = extractPage(nextStarships)
 
 // ASYNC
 
-const Luke = asyncΔ("Luke Skywalker")
+const Luke = asyncDelta("Luke Skywalker")
 
-const pageasyncΔ = composeDeltas(asyncΔ, paginatorΔ)
+const pageasyncΔ = composeDeltas(asyncDelta, paginatorDelta)
 
 const Planets = pageasyncΔ("Planets", {
   page: pagePlanets,

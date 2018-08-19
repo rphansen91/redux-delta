@@ -1,10 +1,10 @@
 import { createStore } from "redux"
-import { toggleΔ } from "./toggle"
+import { toggleDelta } from "./toggle"
 
 describe("Redux Delta", () => {
   describe("Higher Order Delta", () => {
     describe("Toggle", () => {
-      const toggle = toggleΔ("toggle")
+      const toggle = toggleDelta("toggle")
       const store = createStore(toggle)
 
       it("Should create a toggle delta", () => {
@@ -12,7 +12,7 @@ describe("Redux Delta", () => {
       })
 
       it("Should initialize a toggle delta active true", () => {
-        const t = toggleΔ("toggle", { active: true })
+        const t = toggleDelta("toggle", { active: true })
         const s = createStore(t)
         expect(s.getState()).toEqual({ active: true })
       })
