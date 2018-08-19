@@ -1,43 +1,41 @@
-import { createStore, combineReducers } from "redux"
-import { Toggle } from "./toggle"
+import { createStore } from "redux"
+import { toggleDelta } from "./toggle"
 
 describe("Redux Delta", () => {
   describe("Higher Order Delta", () => {
     describe("Toggle", () => {
-      const name = "toggle"
-      const toggle = new Toggle(name)
-      const store = createStore(combineReducers(toggle.createReducer()))
+      const toggle = toggleDelta("toggle")
+      const store = createStore(toggle)
 
       it("Should create a toggle delta", () => {
-        expect(toggle).toBeInstanceOf(Toggle)
+        expect(typeof toggle).toBe("function")
       })
 
       it("Should initialize a toggle delta active true", () => {
-        const s = createStore(
-          combineReducers(toggle.createReducer({ active: true }))
-        )
-        expect(toggle.mapper(s.getState())).toEqual({ active: true })
+        const t = toggleDelta("toggle", { active: true })
+        const s = createStore(t)
+        expect(s.getState()).toEqual({ active: true })
       })
 
       it("Should default active state false", () => {
-        expect(toggle.mapper(store.getState())).toEqual({ active: false })
+        expect(store.getState()).toEqual({ active: false })
       })
 
       it("Should be able to set the active state true", () => {
         store.dispatch(toggle.setActive(true))
-        expect(toggle.mapper(store.getState())).toEqual({ active: true })
+        expect(store.getState()).toEqual({ active: true })
       })
 
       it("Should be able to set the active state false", () => {
         store.dispatch(toggle.setActive(false))
-        expect(toggle.mapper(store.getState())).toEqual({ active: false })
+        expect(store.getState()).toEqual({ active: false })
       })
 
       it("Should be able to toggle the active state", () => {
         store.dispatch(toggle.toggleActive())
-        expect(toggle.mapper(store.getState())).toEqual({ active: true })
+        expect(store.getState()).toEqual({ active: true })
         store.dispatch(toggle.toggleActive())
-        expect(toggle.mapper(store.getState())).toEqual({ active: false })
+        expect(store.getState()).toEqual({ active: false })
       })
     })
   })

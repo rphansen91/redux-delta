@@ -51,5 +51,12 @@ describe("Redux Delta", () => {
       expect(isType(type)).toBeTruthy()
       expect(result).toEqual(payload)
     })
+
+    it("Should transform the dispatched payload", () => {
+      const state = {}
+      const timestwo = createAction("TIMESTWO", (v: number) => v * 2)
+      const { payload } = timestwo(2)
+      expect(payload).toEqual(4)
+    })
   })
 })

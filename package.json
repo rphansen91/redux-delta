@@ -4,7 +4,6 @@
   "description": "Helper methods and cli to remove the boilerplate of Redux project setup and development.",
   "main": "dist/package/umd/index.js",
   "module": "dist/package/es/index.js",
-  "typings": "dist/package/types/index.d.ts",
   "scripts": {
     "lint": "tslint -t codeFrame 'src/**/*.ts'",
     "test": "jest",

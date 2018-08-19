@@ -1,7 +1,13 @@
-import DeltaX, { State } from "./index"
+import { Delta } from "./index"
 import { toActionName } from "../utils"
-import { Reducer } from "../reducer"
-import { ActionCreator } from "../action"
+import { createReducer, Reducer } from "../reducer"
+import { createAction, ActionCreator } from "../action"
+
+export interface AsyncΔ<D> extends Delta<AsyncState<D>> {
+  setLoading: ActionCreator<boolean>
+  setFailure: ActionCreator<string>
+  setSuccess: ActionCreator<D>
+}
 
 export class AsyncState<D> {
   loading: boolean = false
@@ -9,33 +15,20 @@ export class AsyncState<D> {
   data: D | null = null
 }
 
-export class Async<D> extends DeltaX<AsyncState<D>> {
-  setLoading: ActionCreator<boolean>
-  setFailure: ActionCreator<string>
-  setSuccess: ActionCreator<D>
-
-  constructor(name: string) {
-    super(name)
-    this.setLoading = this.createAction(toActionName(name, "loading"))
-    this.setSuccess = this.createAction(toActionName(name, "success"))
-    this.setFailure = this.createAction(toActionName(name, "failure"))
-  }
-
-  createReducer(
-    initial: AsyncState<D> = new AsyncState()
-  ): State<Reducer<AsyncState<D>>> {
-    return super.createReducer(initial)
-  }
-
-  mapper(state: State<AsyncState<D>>): AsyncState<D> {
-    return super.mapper(state)
-  }
-
-  getCases() {
-    return [
-      this.setLoading.case((_, loading: boolean) => ({ loading: !!loading })),
-      this.setFailure.case((_, error: string) => ({ error })),
-      this.setSuccess.case((_, data?: D) => ({ data }))
-    ]
-  }
+export function asyncDelta<D>(
+  name: string,
+  initial: AsyncState<D> = new AsyncState()
+): AsyncΔ<D> {
+  const setLoading = createAction<boolean>(toActionName(name, "setLoading"))
+  const setSuccess = createAction<D | null>(toActionName(name, "setSuccess"))
+  const setFailure = createAction<string>(toActionName(name, "setFailure"))
+  const reducer: any = createReducer(initial, [
+    setLoading.case((_, loading: boolean) => ({ loading: !!loading })),
+    setSuccess.case((_, data: D | null) => ({ data })),
+    setFailure.case((_, error: string) => ({ error }))
+  ])
+  reducer.setLoading = setLoading
+  reducer.setSuccess = setSuccess
+  reducer.setFailure = setFailure
+  return reducer as AsyncΔ<D>
 }

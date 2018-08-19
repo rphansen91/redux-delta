@@ -5,7 +5,6 @@
 [![npm](https://img.shields.io/npm/v/redux-delta.svg?style=flat-square)](https://www.npmjs.com/package/redux-delta)
 [![downloads](https://img.shields.io/npm/dw/redux-delta.svg?style=flat-square)](https://www.npmjs.com/package/redux-delta)
 
-
 ## Description
 
 Helper methods and cli to remove the boilerplate of Redux project setup and development.
@@ -17,7 +16,6 @@ Helper methods and cli to remove the boilerplate of Redux project setup and deve
 1. `npm install redux-delta --save`
 2. `cd <src directory>`
 3. `redux-delta create`
-
 
 ## Usage
 
@@ -33,7 +31,7 @@ export const dec = ca("DECREMENT")
 
 ### 2. Create Reducer
 
-  `redux-delta reducer counter`
+`redux-delta reducer counter`
 
 ```js
 // ./store/reducers/counter.js
@@ -44,7 +42,6 @@ export default cr({ count: 0 }, [
   inc.case(({ count }, v = 1) => ({ count: count + v })),
   dec.case(({ count }, v = 1) => ({ count: count - v }))
 ])
-
 ```
 
 ### 3. Dispatch Actions
@@ -56,54 +53,89 @@ import { inc, dec } from "../store/actions/counter"
 
 export default connect(
   ({ counter }) => ({ counter }),
-  dispatch => ({
-    inc () {
-      dispatch(inc())
-    },
-    dec () {
-      dispatch(dec())
-    }
-  })
+  { inc, dec }
 )
 ```
 
-### 4. Higher Order Deltas (HOD)
+### 4. Higher Order Deltas
 
 Higher order deltas are common redux patterns that can be reused and extended.
 
-#### 1. AsyncAction
+#### 1. Toggle Delta
 
-  ```js
-  import { combineReducers } from "redux"
-  import { asyncAction } from "redux-delta/dx/asyncAction"
+- Schema
 
-  const loadLuke = asyncAction("PROFILE", (id, dispatch, getState) =>
-    fetch(`https://swapi.co/api/people/${id}?format=json`)
-    .then(res => res.text()))
+```js
+{
+  "active": boolean
+}
+```
 
-  combineReducers({
-    luke: loadLuke.reducer
+- Usage
+
+```js
+import { createStore } from "redux"
+import { toggleDelta } from "redux-delta/lib/dx/toggle"
+
+const toggle = toggleDelta("MENU", { active: false })
+const store = createStore(toggle)
+store.getState() // { active: false }
+store.dispatch(toggle.toggleActive())
+store.getState() // { active: true }
+store.dispatch(toggle.setActive(false))
+store.getState() // { active: false }
+store.dispatch(toggle.setActive(true))
+store.getState() // { active: true }
+```
+
+#### 2. Async Delta
+
+- Schema
+
+```js
+{
+  "loading": boolean
+  "data": D | null
+  "error": string
+}
+```
+
+- Usage
+
+```js
+import { createStore } from "redux"
+import { asyncDelta } from "redux-delta/lib/dx/async"
+
+const luke = asyncDelta("Luke Skywalker")
+
+const store = createStore(luke)
+
+store.dispatch(luke.setLoading(true))
+store.dispatch(luke.setFailure("")) // Clear out any previous errors
+store.getState() // { loading: true, data: null, error: "" }
+
+fetch(`https://swapi.co/api/people/0?format=json`)
+  .then(res => res.json())
+  .then(res => {
+    store.dispatch(luke.setLoading(false))
+    store.dispatch(luke.setSuccess(res))
+    store.getState() // { loading: false, data: res, error: "" }
   })
-
-  dispatch(loadProfile(1))
-  ```
-
-  State Lifecycle of AsyncAction
-
-  ```js
-  // On AsyncAction dispatch
-  -> ({ loading: true })
-  ```
-  ```js
-  // On AsyncAction Promise<LukeSkywalker> resolve
-  -> ({
-    loading: false,
-    data: { ...(LukeSkywalker) }
+  .catch(e => {
+    store.dispatch(luke.setLoading(false))
+    store.dispatch(luke.setFailure(e.message))
+    store.getState() // { loading: true, data: null, error: "The API has succumb to the darkside" }
   })
-  ```
-  ```js
-  // On AsyncAction Promise<LukeSkywalker> reject
-  -> { loading: false, error: "The API has succumb to the darkside" }
-  ```
+```
 
-### 5. Custom Higher Order Deltas (CHOD)
+### 5. Compose Higher Order Deltas
+
+```js
+import composeDeltas from "redux-delta/lib/dx"
+import { toggleDelta } from "redux-delta/lib/dx/toggle"
+import { asyncDelta } from "redux-delta/lib/dx/async"
+
+const activeAsyncΔ = composeDeltas(toggleDelta, asyncDelta)
+const unique = activeAsyncΔ("unique/identifier/", initial)
+const store = createStore(userinfo)
+```

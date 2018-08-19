@@ -10,8 +10,9 @@ const {
   createAction,
   createReducer
 } = require("../dist/package/lib")
-const { Async } = require("../dist/package/lib/dx/async")
-const { Paginator } = require("../dist/package/lib/dx/paginator")
+const { default: composeDeltas } = require("../dist/package/lib/dx")
+const { asyncDelta } = require("../dist/package/lib/dx/async")
+const { paginatorDelta } = require("../dist/package/lib/dx/paginator")
 const nextPlanets = `https://swapi.co/api/planets?page=4&format=json`
 const nextStarships = `https://swapi.co/api/starships?page=1&format=json`
 const pagePlanets = extractPage(nextPlanets)
@@ -19,17 +20,27 @@ const pageStarships = extractPage(nextStarships)
 
 // ASYNC
 
-const Luke = new Async("Luke Skywalker")
-const Planets = new Paginator("Planets")
-const Starships = new Paginator("Starships")
+const Luke = asyncDelta("Luke Skywalker")
+
+const pageasyncΔ = composeDeltas(asyncDelta, paginatorDelta)
+
+const Planets = pageasyncΔ("Planets", {
+  page: pagePlanets,
+  nextPage: nextPlanets
+})
+
+const Starships = pageasyncΔ("Starships", {
+  page: pageStarships,
+  nextPage: nextStarships
+})
 
 // INITIALIZE STORE
 
 const { subscribe, dispatch, getState } = createStore(
   combineReducers({
-    ...Luke.createReducer(),
-    ...Planets.createReducer({ page: pagePlanets, nextPage: nextPlanets }),
-    ...Starships.createReducer({ page: pageStarships, nextPage: nextStarships })
+    Luke,
+    Planets,
+    Starships
   }),
   {},
   compose(applyMiddleware(delta))
@@ -54,7 +65,7 @@ fetch(`https://swapi.co/api/people/1?format=json`)
     dispatch(Luke.setFailure(err.message))
   })
 
-fetch(Planets.mapper(getState()).nextPage)
+fetch(getState().Planets.nextPage)
   .then(res => res.json())
   .then(({ next, results, count }) => {
     const { nextPage } = Planets.mapper(getState())
@@ -71,10 +82,10 @@ fetch(Planets.mapper(getState()).nextPage)
     dispatch(Planets.setFailure(err.message))
   })
 
-fetch(Starships.mapper(getState()).nextPage)
+fetch(getState().Starships.nextPage)
   .then(res => res.json())
   .then(({ next, results, count }) => {
-    const { nextPage } = Starships.mapper(getState())
+    const { nextPage } = getState().Starships
     const max = Math.ceil(count / results.length)
     const page = extractPage(nextPage)
     !isNaN(page) && dispatch(Starships.setPage(page))

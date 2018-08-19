@@ -1,45 +1,33 @@
-import DeltaX, { State } from "./index"
-import { Async, AsyncState } from "./async"
+import { Delta } from "./index"
 import { toActionName } from "../utils"
-import { createAction as ca, ActionCreator } from "../action"
-import { createReducer as cr, Reducer } from "../reducer"
+import { createAction, ActionCreator } from "../action"
+import { createReducer, Reducer } from "../reducer"
 
-export class PaginateState<D> extends AsyncState<D> {
+interface PaginatorΔ extends Delta<PaginateState> {
+  setNextPage: ActionCreator<string>
+  setMaxPages: ActionCreator<number>
+  setPage: ActionCreator<number>
+}
+export class PaginateState {
   nextPage?: string
   maxPages?: number
   page?: number
 }
 
-export class Paginator<D> extends Async<D> {
-  setNextPage: ActionCreator<string>
-  setMaxPages: ActionCreator<number>
-  setPage: ActionCreator<number>
-
-  /* istanbul ignore next */
-  constructor(name: string) {
-    super(name)
-    this.setNextPage = this.createAction(toActionName("setNextPage", name))
-    this.setMaxPages = this.createAction(toActionName("setMaxPages", name))
-    this.setPage = this.createAction(toActionName("setPage", name))
-  }
-
-  createReducer(
-    initial: PaginateState<D> = new PaginateState()
-  ): State<Reducer<PaginateState<D>>> {
-    return super.createReducer(initial)
-  }
-
-  mapper(state: State<PaginateState<D>>): PaginateState<D> {
-    return super.mapper(state)
-  }
-
-  getCases() {
-    return super
-      .getCases()
-      .concat([
-        this.setNextPage.case((_, nextPage: string) => ({ nextPage })),
-        this.setMaxPages.case((_, maxPages: number) => ({ maxPages })),
-        this.setPage.case((_, page: number) => ({ page }))
-      ])
-  }
+export function paginatorDelta(
+  name: string,
+  initial: PaginateState = new PaginateState()
+): PaginatorΔ {
+  const setNextPage = createAction<string>(toActionName(name, "setNextPage"))
+  const setMaxPages = createAction<number>(toActionName(name, "setMaxPages"))
+  const setPage = createAction<number>(toActionName(name, "setPage"))
+  const reducer: any = createReducer(initial, [
+    setNextPage.case((_, nextPage: string) => ({ nextPage })),
+    setMaxPages.case((_, maxPages: number) => ({ maxPages })),
+    setPage.case((_, page: number) => ({ page }))
+  ])
+  reducer.setNextPage = setNextPage
+  reducer.setMaxPages = setMaxPages
+  reducer.setPage = setPage
+  return reducer as PaginatorΔ
 }
