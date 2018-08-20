@@ -72,5 +72,25 @@ describe("Redux Delta", () => {
       expect(mergeState).toBeCalledWith({}, { count: 0 })
       expect(mergeState).toBeCalledWith({}, { count: 0 }, { count: 1 })
     })
+
+    it("Should be able to handle null method", () => {
+      const reducer = createReducer({ count: 0 }, [
+        inc.case(({ count }, v = 1) => ({ count: count + v })),
+        inc.case(({ count }, v = 1) => ({ count: count + v }))
+      ])
+      expect(reducer({ count: 0 })).toEqual({ count: 0 })
+    })
+
+    it("Should be able to handle null method -- breakCase", () => {
+      const reducer = createReducer(
+        { count: 0 },
+        [
+          inc.case(({ count }, v = 1) => ({ count: count + v })),
+          inc.case(({ count }, v = 1) => ({ count: count + v }))
+        ],
+        { breakCase: true }
+      )
+      expect(reducer({ count: 0 })).toEqual({ count: 0 })
+    })
   })
 })
