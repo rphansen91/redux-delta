@@ -8,5 +8,7 @@ export const toActionName = (...str: string[]): string =>
   str
     .filter(isString)
     .join(" ")
-    .replace(/\ |\-|(?<=\w)([A-Z])/g, "_$1")
+    .replace(/\ |\-|([A-Z])/g, "_$1")
+    .replace(/__/, "_")
+    .replace(/^_/, "")
     .toUpperCase()
