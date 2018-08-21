@@ -20,6 +20,7 @@ export function createReducer<T>(
   const validCases = empty.concat(actionCases).filter(isValidCase)
 
   return (state: T = initialState, action: Action): T => {
+    if (!action) return state
     if (breakCase) {
       // HANDLE ONLY FIRST CASE
       for (const { isType, exec } of validCases) {
