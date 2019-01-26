@@ -1,6 +1,6 @@
 {
   "name": "redux-delta",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Helper methods and cli to remove the boilerplate of Redux project setup and development.",
   "main": "dist/package/umd/index.js",
   "module": "dist/package/es/index.js",
