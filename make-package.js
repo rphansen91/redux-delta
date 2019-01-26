@@ -10,7 +10,7 @@ function makePackageJson(next) {
   const content = Object.assign({}, package, {
     main: "umd/index.js",
     module: "es/index.js",
-    typings: "types/index.d.ts"
+    typings: "lib/index.d.ts"
   })
   fs.writeFileSync(dest, JSON.stringify(content, null, 2), "utf8")
   next()
